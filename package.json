@@ -1,6 +1,6 @@
 {
   "name": "@stellaraf/jest",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -12,24 +12,41 @@
   "publishConfig": {
     "access": "public"
   },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@stellaraf"
+    ]
+  },
+  "prettier": {
+    "printWidth": 100,
+    "trailingComma": "all",
+    "semi": true
+  },
   "devDependencies": {
-    "@stellaraf/eslint": "^1.0.2",
+    "@stellaraf/eslint-config": "^1.1.1",
     "@types/jest": "^29.0.2",
     "@types/node": "^18.7.18",
-    "@typescript-eslint/eslint-plugin": "^5.37.0",
-    "@typescript-eslint/parser": "^5.37.0",
     "esbuild": "^0.15.7",
     "eslint": "^8.23.1",
-    "eslint-plugin-import": "^2.26.0",
     "jest": "^29.0.3",
+    "jest-esbuild": "^0.2.9",
     "prettier": "^2.7.1",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.3"
   },
   "scripts": {
+    "lint": "eslint --quiet src/**/*",
     "build:js": "ts-node-esm build.ts",
     "build:ts": "tsc",
     "build": "pnpm run build:js && pnpm run build:ts",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+  },
+  "peerDependencies": {
+    "esbuild": "^0.15.7",
+    "jest": "^29.0.3",
+    "jest-esbuild": "^0.2.9",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.3"
   }
 }
