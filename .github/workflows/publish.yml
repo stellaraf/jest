@@ -29,7 +29,6 @@ jobs:
         uses: changesets/action@v1
         with:
           publish: pnpm -r publish --no-git-checks
-          setupGitUser: false
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
