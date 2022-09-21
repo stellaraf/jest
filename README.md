@@ -10,3 +10,34 @@
   <br/>
   <br/>
 </div>
+
+# Usage
+
+## Basic
+
+```ts
+// jest.config.ts or jest.config.js
+export { base as default } from "@stellaraf/jest";
+```
+
+## Override Configuration
+
+```ts
+import { standardConfig } from "@stellaraf/jest";
+
+export default standardConfig(
+  // Transform overrides passed to esbuild-jest
+  { platform: "node" },
+  // Jest configuration overrides
+  { displayName: "Too cool for school" }
+);
+```
+
+## Monorepo
+
+```ts
+import { monorepoConfig } from "@stellaraf/jest";
+
+// Overrides from standardConfig() are also supported
+export default monorepoConfig("@scope/");
+```
