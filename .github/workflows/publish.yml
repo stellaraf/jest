@@ -1,7 +1,7 @@
 name: Publish
 on:
   workflow_run:
-    workflows: ['Tests']
+    workflows: ['Quality']
     branches: [main]
     types:
       - completed
