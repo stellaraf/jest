@@ -1,45 +1,49 @@
 import type { Config } from "jest";
+import type { TransformOptions } from "esbuild";
 
-export const jestConfig: Config = {
+export const base: Config = {
   collectCoverageFrom: ["<rootDir>/src/**/!(*.spec|test)*.ts"],
   moduleDirectories: ["node_modules"],
   transform: {
-    "^.+\\.tsx?$": "jest-esbuild",
+    "^.+\\.tsx?$": "esbuild-jest",
   },
-  testPathIgnorePatterns: [
-    "node_modules",
-    "legacy",
-    "jest-config",
-    "eslint-config-custom",
-    "packages/types",
-  ],
+  testPathIgnorePatterns: ["node_modules", "jest-config"],
   passWithNoTests: true,
   testMatch: ["<rootDir>/src/**/*.@(spec|test).ts"],
 };
 
 /**
- * Create a Jest Project Configuration.
+ * Create a standard Jest config.
  *
- * @param name Project name
- * @param testEnvironment Test environment
- * @param overrides Optional configuration overrides
+ * @param transformOptions `esbuild` Transform API options to pass to `esbuild-jest`
+ * @param extra Additional jest config, will override defaults.
  */
-export function createProject(
-  name: string,
-  testEnvironment: "node" | "miniflare",
-  overrides: Config = {},
+export function standardConfig(
+  transformOptions: TransformOptions = {},
+  extra: Config = {},
 ): Config {
-  const { projects, ...rest } = jestConfig;
-  const project = {
-    ...rest,
-    displayName: name,
-    testEnvironment,
-    ...overrides,
-  } as Config;
-  if (testEnvironment === "miniflare") {
-    project.testEnvironmentOptions = { scriptPath: "src/index.ts", module: true };
-  }
-  return { ...rest, displayName: name, testEnvironment, ...overrides };
+  const transform: NonNullable<Config["transform"]> = {
+    "^.+\\.tsx?$": ["esbuild-jest", transformOptions as Record<string, unknown>],
+  };
+  return { ...base, transform, ...extra };
 }
 
-export default jestConfig;
+/**
+ * Create a monorepo-specific Jest config.
+ *
+ * @param baseScope Scope name, e.g. `@stellaraf/cacheutil-` or `@chakra-ui/`
+ * @param transformOptions `esbuild` Transform API options to pass to `esbuild-jest`
+ * @param extra Additional jest config, will override defaults.
+ */
+export function monorepoConfig(
+  baseScope: string,
+  transformOptions: TransformOptions = {},
+  extra: Config = {},
+): Config {
+  const scope = `^${baseScope}(.*)$`;
+  const moduleNameMapper = { [scope]: "<rootDir>/../$1/src" };
+  const transform: NonNullable<Config["transform"]> = {
+    "^.+\\.tsx?$": ["esbuild-jest", transformOptions as Record<string, unknown>],
+  };
+  return { ...base, transform, moduleNameMapper, ...extra };
+}
