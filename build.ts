@@ -3,14 +3,13 @@ import esbuild from "esbuild";
 import type { Format, BuildOptions } from "esbuild";
 
 async function build(format: Exclude<Format, "iife">): Promise<void> {
-    const extension = format === "cjs" ? "cjs" : "mjs";
-    const outfile = `dist/index.${extension}`;
+    const outdir = `dist/${format}`;
     const options: BuildOptions = {
         bundle: true,
         target: ["esnext"],
         format,
         entryPoints: ["src/index.ts"],
-        outfile,
+        outdir,
     };
     const result = await esbuild.build(options);
     for (const error of result.errors) {
