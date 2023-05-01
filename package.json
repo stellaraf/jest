@@ -2,9 +2,9 @@
   "name": "@stellaraf/jest",
   "version": "2.0.2",
   "type": "module",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/types/index.d.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "author": "Matt Love <matt@stellar.tech>",
   "license": "BSD-3-Clause",
   "publishConfig": {
@@ -13,18 +13,17 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "require": "./dist/cjs/index.js",
-      "import": "./dist/esm/index.js",
-      "types": "./dist/types/index.d.ts"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
     },
     "./*": {
-      "require": "./dist/cjs/*.js",
-      "import": "./dist/esm/*.js"
+      "require": "./dist/*.cjs",
+      "import": "./dist/*.mjs"
     }
   },
   "files": [
-    "dist/",
-    "esm/"
+    "dist/"
   ],
   "eslintConfig": {
     "root": true,
